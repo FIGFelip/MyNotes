@@ -1,6 +1,6 @@
 import prisma from "../config/prisma";
 
-export async function findNOtesById(userId){
+export async function findNotesById(userId){
     return prisma.note.findMany({
         where:{
             user_id:userId,
@@ -11,7 +11,7 @@ export async function findNOtesById(userId){
     })
 }
 
-export async function crateNewNote(userId, title, body){
+export async function createNewNote(userId, title, body){
     return prisma.note.create({
         data:{
             title,

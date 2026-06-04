@@ -164,3 +164,24 @@ backend/
 ├── .gitignore
 └── package.json
 ```
+
+
+# Observações
+
+## Subindo compose
+
+executar: ```docker compose down``` 
+
+e ```docker compose up --build -d```
+
+para refazer o build;
+
+e rodar npx prisma generate manualmente:
+
+```docker compose exec app npx prisma generate```
+
+
+opcionalmente, rodar o migrate:
+
+```docker compose exec app npx prisma migrate dev```
+
