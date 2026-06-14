@@ -1,13 +1,15 @@
 import { Router } from "express"
-import {getNotes, createNotes, moveToTrash, deleteFromTrash, editNote, getNotesFromTrash} from "../controllers/noteControllers.js"
+import {getNotes, createNotes, moveToTrash, deleteFromTrash, editNote, getNotesFromTrash, recoverFromTrash} from "../controllers/noteControllers.js"
 
 const router = Router()
 
 router.get("/", getNotes)
-router.get("/trash", getNotesFromTrash)
+router.put("/:id", editNote)
 router.post("/", createNotes)
-router.delete("/:id", moveToTrash)
-router.put("/trash/:id", editNote)
+router.get("/trash", getNotesFromTrash)
+router.patch("/:id", moveToTrash)
+router.delete("/trash/:id", deleteFromTrash)
+router.patch("/trash/:id/recover", recoverFromTrash)
 
 
 export default router

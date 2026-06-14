@@ -185,3 +185,10 @@ opcionalmente, rodar o migrate:
 
 ```docker compose exec app npx prisma migrate dev```
 
+
+para acessar container do banco:
+```docker compose exec db psql -U postgres```
+
+para setar o mynotes:
+``` NODE_ENV=test npx prisma db push```
+

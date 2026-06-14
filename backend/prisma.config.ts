@@ -2,8 +2,11 @@
 // npm install --save-dev prisma dotenv
 import dotenv from "dotenv";
 import { defineConfig } from "prisma/config";
+import path from "node:path"
 
-const envFile = process.env.NODE_ENV === "test" ? ".env.test" : ".env"
+const envFile = process.env.NODE_ENV === "test" ? 
+  path.resolve(process.cwd(), "../.env.test") 
+: path.resolve(process.cwd(), "../.env")
 
 dotenv.config({path: envFile})
 
