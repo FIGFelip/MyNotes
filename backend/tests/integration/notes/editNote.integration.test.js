@@ -104,7 +104,6 @@ describe("Error PUT/notes", () => {
     // console.log("FirstUserNote ANTES edit", firstUserNote.body);
 
     const firstUserNoteId = firstUserNote.body.id;
-    console.log(firstUserNoteId);
 
     expect(firstUserNote.status).toBe(201);
 

@@ -47,9 +47,11 @@ export async function editNote(req, res){
     const {title, body} = req.body
     try{
         const editedNote = await service.edit(id, userId, title, body)
+        console.log("req params: ",req.params[0])
         if (editedNote.count===0){
             return res.status(404).json({message:"Nota não encontrada"})
         }
+        
         return res.status(200).json({message:"Nota editada"})
     } catch(err){
         return res.status(500).json({"Erro ao editar a nota":err.message})
