@@ -1,3 +1,4 @@
+import { logger } from "../config/logger.js";
 import * as service from "../services/noteService.js";
 
 export async function getNotes(req, res) {
@@ -50,7 +51,7 @@ export async function editNote(req, res) {
 
     return res.status(200).json({ message: "Nota editada" });
   } catch (err) {
-    console.error(err.message);
+    logger.error(err.message);
     return res.status(500).json({ message: "Erro ao editar a nota" });
   }
 }
@@ -65,7 +66,7 @@ export async function moveToTrash(req, res) {
     }
     return res.status(200).json({ message: "Nota enviada à lixeira" });
   } catch (err) {
-    console.error(err.message);
+    logger.error(err.message);
     return res.status(500).json({ message: "erro ao mover para a lixeira" });
   }
 }
@@ -80,7 +81,7 @@ export async function recoverFromTrash(req, res) {
     }
     return res.status(200).json({ message: "Nota recuperada com sucesso" });
   } catch (err) {
-    console.error(err.message);
+    logger.error(err.message);
     return res.status(500).json({ message: "Erro ao recuperar nota" });
   }
 }
@@ -97,7 +98,7 @@ export async function deleteFromTrash(req, res) {
 
     return res.status(200).json({ message: "Nota deletada com sucesso" });
   } catch (err) {
-    console.error(err.message);
+    logger.error(err.message);
     return res.status(500).json({ message: "Erro ao deletar a nota" });
   }
 }

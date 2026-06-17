@@ -1,3 +1,4 @@
+import { logger } from "../config/logger.js";
 import * as service from "../services/authService.js";
 
 // register
@@ -34,7 +35,7 @@ export async function login(req, res) {
     }
     return res.status(200).json(token);
   } catch (err) {
-    console.error(err.message);
+    logger.error(err.message);
     return res.status(400).json({
       message: err.message,
     });

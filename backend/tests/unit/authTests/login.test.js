@@ -52,7 +52,7 @@ describe("Login", ()=>{
         expect(jwt.sign).toHaveBeenCalledWith(
             {id:1},
             process.env.JWT_SECRET,
-            {expiresIn:"24h"}
+            {expiresIn:"2h"}
         )
     })
 

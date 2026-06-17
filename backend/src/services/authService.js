@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import * as userRepository from "../repositories/userRepository.js";
+import { logger } from "../config/logger.js";
 
 export async function checkIfEmailExists(email) {
   const user = await userRepository.findByEmail(email);
@@ -11,7 +12,7 @@ export async function register(email, senha) {
   const emailExists = await checkIfEmailExists(email);
 
   if (emailExists) {
-    console.error("Email já em uso: ", email);
+    logger.error("Email já em uso: ", email);
     throw new Error("Credenciais inválidas");
   }
   const hashedPassword = await bcrypt.hash(senha, 10);
@@ -22,13 +23,13 @@ export async function register(email, senha) {
 export async function login(email, senha) {
   const user = await userRepository.findByEmail(email);
   if (!user) {
-    console.error("Usuário não encontrado: ", email);
+    logger.error("Usuário não encontrado: ", email);
     throw new Error("Credenciais inválidas");
   }
 
   const validaSenha = await bcrypt.compare(senha, user.senha);
   if (!validaSenha){
-        console.error("Senha incorreta para: ", email)
+        logger.error("Senha incorreta para: ", email)
         throw new Error("Credenciais inválidas");
   } 
 
