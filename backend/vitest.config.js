@@ -6,7 +6,9 @@ export default defineConfig({
         environment: "node" ,
         setupFiles: [
             "./tests/setup/Setup.js",
-            "./tests/setup/integrationSetup.js"
+            "./tests/setup/testTransaction.js"
+            //"./tests/setup/integrationSetup.js",
+            //"./tests/dbCleanup.js"
         ],
         sequence:{
             concurrent:false

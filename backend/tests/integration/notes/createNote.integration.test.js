@@ -1,175 +1,166 @@
-import request from "supertest"
-import {describe, expect, it} from "vitest"
-import app from "../../../src/app.js"
+import request from "supertest";
+import { describe, expect, it } from "vitest";
+import app from "../../../src/app.js";
 
-describe("POST /notes", ()=>{
-    it("Deve criar nota corretamente", async()=>{
+describe("POST /notes", () => {
+  it("Deve criar nota corretamente", async () => {
+    //criando usuario
+    const email = `test${crypto.randomUUID()}@test.com`;
+    const userRegisterResponse = await request(app)
+      .post("/auth/register")
+      .send({
+        email: email,
+        senha: "testpass123",
+      });
 
-        //criando usuario
-        const email = `test${crypto.randomUUID()}@test.com`
-        const userRegisterResponse = await request(app)
-        .post("/auth/register")
-        .send({
-            email:email,
-            senha:"testpass123"
-        })
+    if (userRegisterResponse.status !== 201) {
+      console.log("Erro no register: ", userRegisterResponse.body);
+    }
 
-        
+    //logando usuario
+    const loginResponse = await request(app).post("/auth/login").send({
+      email: email,
+      senha: "testpass123",
+    });
 
-        if (userRegisterResponse.status !== 201){
-            console.log("Erro no register: ",userRegisterResponse.body)
-        }
+    const token = loginResponse.body.token;
 
-        //logando usuario
-        const loginResponse = await request(app)
-        .post("/auth/login")
-        .send({
-            email:email,
-            senha:"testpass123"
-        })
+    if (loginResponse.status !== 200) {
+      console.log("Erro no login: ", loginResponse.body);
+    }
 
-        const token = loginResponse.body.token
+    //criando a note
+    const noteResponse = await request(app)
+      .post("/notes")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        title: "testNote_title",
+        body: "testNote_body",
+      });
 
-        if (loginResponse.status!==200){
-            console.log("Erro no login: ", loginResponse.body)
-        }
+    expect(noteResponse.status).toBe(201);
+  });
+});
 
-        //criando a note
-        const noteResponse = await request(app)
-        .post("/notes")
-        .set("Authorization", `Bearer ${token}`)
-        .send({
-            title: "testNote_title",
-            body:"testNote_body"
-        })
+describe("Error POST/notes", () => {
+  it("Deve retornar erro se faltar campos obrigatórios", async () => {
+    //missing title
+    //registrando usuario
+    const email = `test${crypto.randomUUID()}@test.com`;
+    const userRegisterResponse = await request(app)
+      .post("/auth/register")
+      .send({
+        email: email,
+        senha: "testpass123",
+      });
 
-        expect(noteResponse.status).toBe(201)
+    if (userRegisterResponse.status !== 201) {
+      console.log("Erro no register: ", userRegisterResponse.body);
+    }
 
+    //logando usuario
+    const loginResponse = await request(app).post("/auth/login").send({
+      email: email,
+      senha: "testpass123",
+    });
 
-    })
-})
+    const token = loginResponse.body.token;
 
+    if (loginResponse.status !== 200) {
+      console.log("Erro no login: ", loginResponse.body);
+    }
 
-describe("Error POST/notes", ()=>{
-    it("Deve retornar erro se faltar campos obrigatórios", async()=>{
+    //criando a note
+    const noteResponse = await request(app)
+      .post("/notes")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        title: "     ",
+        body: "testNote_body",
+      });
 
-        //missing title
-        //registrando usuario
-        const email = `test${crypto.randomUUID()}@test.com`
-        const userRegisterResponse = await request(app)
-        .post("/auth/register")
-        .send({
-            email:email,
-            senha:"testpass123"
-        })
+    expect(noteResponse.status).toBe(500);
+    expect(noteResponse.body.message).toBe(
+      "É necessário título e corpo do texto",
+    );
 
-        
+    //missing body
+    //criando a note
+    const noteResponse2 = await request(app)
+      .post("/notes")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        title: "testTitle",
+        body: "    ",
+      });
 
-        if (userRegisterResponse.status !== 201){
-            console.log("Erro no register: ",userRegisterResponse.body)
-        }
+    expect(noteResponse2.status).toBe(500);
+    expect(noteResponse2.body.message).toBe(
+      "É necessário título e corpo do texto",
+    );
+  });
 
-        //logando usuario
-        const loginResponse = await request(app)
-        .post("/auth/login")
-        .send({
-            email:email,
-            senha:"testpass123"
-        })
+  //token error tests
+  it("Deve retornar erro em caso de token inválido/ausente/corrompido", async () => {
+    //missing token
+    //registrando usuario
+    const email = `test${crypto.randomUUID()}@test.com`;
+    const userRegisterResponse = await request(app)
+      .post("/auth/register")
+      .send({
+        email: email,
+        senha: "testpass123",
+      });
 
-        const token = loginResponse.body.token
+    if (userRegisterResponse.status !== 201) {
+      console.log("Erro no register: ", userRegisterResponse.body);
+    }
 
-        if (loginResponse.status!==200){
-            console.log("Erro no login: ", loginResponse.body)
-        }
+    //logando usuario
+    const loginResponse = await request(app).post("/auth/login").send({
+      email: email,
+      senha: "testpass123",
+    });
 
-        //criando a note
-        const noteResponse = await request(app)
-        .post("/notes")
-        .set("Authorization", `Bearer ${token}`)
-        .send({
-            title: "     ",
-            body:"testNote_body"
-        })
+    //const token = loginResponse.body.token
 
-        expect(noteResponse.status).toBe(500)
-        expect(noteResponse.body.message).toBe("É necessário título e corpo do texto")
+    if (loginResponse.status !== 200) {
+      console.log("Erro no login: ", loginResponse.body);
+    }
 
+    //criando a note
+    const noteResponse = await request(app).post("/notes").send({
+      title: "testTitle",
+      body: "testNote_body",
+    });
 
-        //missing body
-        //criando a note
-        const noteResponse2 = await request(app)
-        .post("/notes")
-        .set("Authorization", `Bearer ${token}`)
-        .send({
-            title: "testTitle",
-            body:"    "
-        })
+    expect(noteResponse.status).toBe(401);
+    expect(noteResponse.body.message).toBe("No token provided");
 
-        expect(noteResponse2.status).toBe(500)
-        expect(noteResponse2.body.message).toBe("É necessário título e corpo do texto")
-    })
+    //corrupted token
+    //criando a note
+    const noteResponse2 = await request(app)
+      .post("/notes")
+      .set("authorization", "Bearer")
+      .send({
+        title: "testTitle",
+        body: "testNote_body",
+      });
 
-    //token error tests
-    it("Deve retornar erro em caso de token inválido/ausente/corrompido", async()=>{
-        //missing token
-        //registrando usuario
-        const email = `test${crypto.randomUUID()}@test.com`
-        const userRegisterResponse = await request(app)
-        .post("/auth/register")
-        .send({
-            email:email,
-            senha:"testpass123"
-        })
+    expect(noteResponse2.status).toBe(401);
+    expect(noteResponse2.body.message).toBe("Corrupted token");
 
-        if (userRegisterResponse.status !== 201){
-            console.log("Erro no register: ",userRegisterResponse.body)
-        }
+    //token invalido
+    //criando a note
+    const noteResponse3 = await request(app)
+      .post("/notes")
+      .set("authorization", "Bearer token invalido")
+      .send({
+        title: "testTitle",
+        body: "testNote_body",
+      });
 
-        //logando usuario
-        const loginResponse = await request(app)
-        .post("/auth/login")
-        .send({
-            email:email,
-            senha:"testpass123"
-        })
-
-        //const token = loginResponse.body.token
-
-        if (loginResponse.status!==200){
-            console.log("Erro no login: ", loginResponse.body)
-        }
-
-        //criando a note
-        const noteResponse = await request(app)
-        .post("/notes")
-        .send({
-            title: "testTitle",
-            body:"testNote_body"
-        })
-
-        expect(noteResponse.status).toBe(401)
-        expect(noteResponse.body.message).toBe("No token provided")
-
-        //corrupted token
-        //criando a note
-        const noteResponse2 = await request(app).post("/notes").set("authorization", "Bearer").send({
-            title: "testTitle",
-            body:"testNote_body"
-        })
-
-        expect(noteResponse2.status).toBe(401)
-        expect(noteResponse2.body.message).toBe("Corrupted token")
-
-
-        //token invalido
-        //criando a note
-        const noteResponse3 = await request(app).post("/notes").set("authorization", "Bearer token invalido").send({
-            title: "testTitle",
-            body:"testNote_body"
-        })
-
-        expect(noteResponse3.status).toBe(401)
-        expect(noteResponse3.body.message).toBe("Token inválido")
-    })
-})
+    expect(noteResponse3.status).toBe(401);
+    expect(noteResponse3.body.message).toBe("Token inválido");
+  });
+});

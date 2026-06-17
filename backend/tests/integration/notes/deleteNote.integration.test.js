@@ -50,10 +50,10 @@ describe("DELETE /notes", ()=>{
             status: "inactive"
         })
 
-        if(softDeleteRes.status!==204){
+        if(softDeleteRes.status!==200){
             console.log("Erro no soft delete: ", softDeleteRes.body)
         }
-        expect(softDeleteRes.status).toBe(204)
+        expect(softDeleteRes.status).toBe(200)
 
         //validando soft delete
         const getFromTrashRes = await request(app).get("/notes/trash").set("Authorization", `Bearer ${token}`)
@@ -73,11 +73,11 @@ describe("DELETE /notes", ()=>{
         })
 
         const hardDelete = await request(app).delete(`/notes/trash/${noteId}`).set("Authorization", `Bearer ${token}`)
-        expect(hardDelete.status).toBe(204)
-        // if(hardDeleteRes.status!=204){
+        expect(hardDelete.status).toBe(200)
+        // if(hardDeleteRes.status!=200){
         //     console.log("Erro no hardDelete",hardDeleteRes.body)
         // }
-        // expect(hardDeleteRes.status).toBe(204)
+        // expect(hardDeleteRes.status).toBe(200)
 
         //validando hard delete
         

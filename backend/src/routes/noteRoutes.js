@@ -1,6 +1,6 @@
 import { Router } from "express"
-import { sanitizeNote } from "../middlewares/sanitizeMiddleware.js"
-import { validateNote } from "../middlewares/validationMiddleware.js"
+import { sanitizeNote } from "../middlewares/note/sanitizeMiddleware.js"
+import { validateNote } from "../middlewares/note/validationMiddleware.js"
 import {getNotes, createNotes, moveToTrash, deleteFromTrash, editNote, getNotesFromTrash, recoverFromTrash} from "../controllers/noteControllers.js"
 
 const router = Router()

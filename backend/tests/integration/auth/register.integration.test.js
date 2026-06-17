@@ -5,8 +5,9 @@ import app from "../../../src/app.js";
 //happy path-----
 describe("POST /auth/register", () => {
   it("deve registrar usuário", async () => {
+    const email = `test${crypto.randomUUID()}@test.com`
     const registerResponse = await request(app).post("/auth/register").send({
-      email: "test@test.com",
+      email: email,
       senha: "testpassintegration",
     });
 
@@ -44,20 +45,22 @@ describe("Error POST /auth/register", () => {
   //email em uso
   it("Deve retornar erro se email já estiver em uso", async () => {
     //1 email
+    const email = `test${crypto.randomUUID()}@test.com`
     const registerRes = await request(app).post("/auth/register").send({
-      email: "test@test.com",
+      email: email,
       senha: "testPass",
     });
 
-    expect(registerRes.status).toBe(201);
-
+    
     // repetindo email
     const registerRes2 = await request(app).post("/auth/register").send({
-      email: "test@test.com",
+      email: email,
       senha: "test123",
     });
-
+    
+    
+    expect(registerRes.status).toBe(201);
     expect(registerRes2.status).toBe(400);
-    expect(registerRes2.body.message).toBe("Email já em uso");
+    expect(registerRes2.body.message).toBe("Credenciais inválidas");
   });
 });

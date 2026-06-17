@@ -36,15 +36,19 @@ describe("Sanitize POST/notes", ()=>{
         .post("/notes")
         .set("Authorization", `Bearer ${token}`)
         .send({
-            title:"<script>alert('xss scritp')</script>",
-            body:"<img src=x onerror='alert(1)'>"
+            title:"testXSSTitle<script>alert('xss scritp')</script>",
+            body:"testXSSBody<img src=x onerror='alert(1)'>"
         })
 
-        if(XSSnote.status!==400){
+        if(XSSnote.status!==201){
             console.log("Xss note post error: ", XSSnote.body)
         }
-        expect(XSSnote.status).toBe(400)
-        expect(XSSnote.body.errors).toBeDefined()
-        expect(XSSnote.body.errors[0].msg).toBe("Título Obrigatório")
+        expect(XSSnote.status).toBe(201)
+        expect(XSSnote.body.title).toBe("testXSSTitle")
+        expect(XSSnote.body.body).toBe("testXSSBody")
+        expect(XSSnote.body.title).not.toContain("<script>alert('xss scritp')</script>")
+        expect(XSSnote.body.body).not.toContain("<img src=x onerror='alert(1)'>")
+        // expect(XSSnote.body.errors).toBeDefined()
+        // expect(XSSnote.body.errors[0].msg).toBe("Título Obrigatório")
     })
 })

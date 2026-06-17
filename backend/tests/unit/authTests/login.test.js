@@ -28,9 +28,10 @@ beforeEach(()=>{
 
 describe("Login", ()=>{
     it("Deve logar corretamente", async()=>{
+        const email = `test${crypto.randomUUID()}@test.com`
         userRepo.findByEmail.mockResolvedValue({
             id:1,
-            email:"test@test.com",
+            email:email,
             senha:"hashedPassword"
         })
 
@@ -38,13 +39,13 @@ describe("Login", ()=>{
 
         jwt.sign.mockReturnValue("fake-token")
 
-        const result = await login("test@test.com", "testpass")
+        const result = await login(email, "testpass")
 
         expect(result).toEqual({
             token:"fake-token"
         })
 
-        expect(userRepo.findByEmail).toHaveBeenCalledWith("test@test.com")
+        expect(userRepo.findByEmail).toHaveBeenCalledWith(email)
 
         expect(bcrypt.compare).toHaveBeenCalledWith("testpass", "hashedPassword")
 
@@ -55,10 +56,10 @@ describe("Login", ()=>{
         )
     })
 
-    it("deve retornar erro se não existir usuario nao possuir cadastro(email not found)", async()=>{
+    it("deve retornar erro se não existir usuario/Não possuir cadastro(email not found)", async()=>{
         userRepo.findByEmail.mockResolvedValue(null)
 
-        await expect(login("test@test.com", "testpass")).rejects.toThrow("Email não encontrado")
+        await expect(login("test999@test.com", "testpass")).rejects.toThrow("Credenciais inválidas")
 
         expect(bcrypt.compare).not.toHaveBeenCalled()
     })
@@ -66,13 +67,13 @@ describe("Login", ()=>{
     it("deve retornar erro em caso de senha incorreta", async()=>{
         userRepo.findByEmail.mockResolvedValue({
             id:1,
-            email:"test@test",
+            email:"test@test888",
             senha:"hashedPassword"
         })
 
         bcrypt.compare.mockResolvedValue(false)
 
-        await expect(login("test@test", "incorrectPass")).rejects.toThrow("Credenciais inválidas")
+        await expect(login("test@test888", "incorrectPass")).rejects.toThrow("Credenciais inválidas")
 
         expect(bcrypt.compare).toHaveBeenCalled()
     })

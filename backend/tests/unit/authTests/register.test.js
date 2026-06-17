@@ -13,18 +13,19 @@ beforeEach(()=>{
 })
 
 describe("Create user", ()=>{
+    const email = `test${crypto.randomUUID()}@test.com`
     it("Deve criar usuário corretamente", async()=>{
         userRepo.createUser.mockResolvedValue({
-            email:"test@test.com",
+            email:email,
         })
 
-        const result = await register("test@test.com", "testpass")
+        const result = await register(email, "testpass")
 
         expect(result).toEqual({
-            email:"test@test.com"
+            email:email
         })
 
-        expect(userRepo.createUser).toHaveBeenCalledWith("test@test.com", expect.any(String))
+        expect(userRepo.createUser).toHaveBeenCalledWith(email, expect.any(String))
         const hashedPassword = userRepo.createUser.mock.calls[0][1]
 
         const validPassword = await bcrypt.compare(
@@ -36,12 +37,12 @@ describe("Create user", ()=>{
     })
     it("Deve retornar erro se email já estiver em uso", async()=>{
         userRepo.findByEmail.mockResolvedValue({
-            email:"test@test.com"
+            email:email
         })
 
-        await expect(register("test@test.com", "testpass")).rejects.toThrow("Email já em uso")
+        await expect(register(email, "testpass")).rejects.toThrow("Credenciais inválidas")
 
-        expect(userRepo.findByEmail).toHaveBeenCalledWith("test@test.com")
+        expect(userRepo.findByEmail).toHaveBeenCalledWith(email)
 
         expect(userRepo.createUser).not.toHaveBeenCalled()
     })

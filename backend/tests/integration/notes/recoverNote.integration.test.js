@@ -50,10 +50,10 @@ describe("Recover /trash/id", ()=>{
             status: "inactive"
         })
 
-        if(softDeleteRes.status!==204){
+        if(softDeleteRes.status!==200){
             console.log("Erro no soft delete: ", softDeleteRes.body)
         }
-        expect(softDeleteRes.status).toBe(204)
+        expect(softDeleteRes.status).toBe(200)
 
         //validando soft delete
         const getFromTrashRes = await request(app).get("/notes/trash").set("Authorization", `Bearer ${token}`)

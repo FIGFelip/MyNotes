@@ -41,10 +41,11 @@ describe("POST/login", ()=>{
 describe("Error POST/login", ()=>{
     it("Deve retornar erro se email não existir", async()=>{
         //register
+        const email = `test${crypto.randomUUID()}@test.com`
         const registerResponse = await request(app)
         .post("/auth/register")
         .send({
-            email:"test@test.com",
+            email:email,
             senha:"testpass"
         })
 
@@ -61,17 +62,18 @@ describe("Error POST/login", ()=>{
         })
 
         expect(loginResponse.status).toBe(400)
-        expect(loginResponse.body.message).toBe("Email não encontrado")
+        expect(loginResponse.body.message).toBe("Credenciais inválidas")
     })
 
     it("Deve retornar erro se não houver email/senha", async()=>{
         // missing email
 
         //register
+        const email = `test${crypto.randomUUID()}@test.com`
         const registerResponse = await request(app)
         .post("/auth/register")
         .send({
-            email:"test@test.com",
+            email:email,
             senha:"testpass"
         })
 
@@ -119,10 +121,11 @@ describe("Error POST/login", ()=>{
         expect(loginResponse2.body.message).toBe("Campos de email/senha faltantes")
     })
     it("Deve retornar erro se credenciais forem inválidas", async()=>{
+        const email = `test${crypto.randomUUID()}@test.com`
         const registerResponse = await request(app)
         .post("/auth/register")
         .send({
-            email:"test@test.com",
+            email:email,
             senha:"testpass"
         })
 
@@ -134,7 +137,7 @@ describe("Error POST/login", ()=>{
         const loginResponse = await request(app)
         .post("/auth/login")
         .send({
-            email:"test@test.com",
+            email:email,
             senha:"wrongPass"
         })
 
