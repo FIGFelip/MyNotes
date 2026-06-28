@@ -1,10 +1,8 @@
 import { beforeAll, beforeEach, afterAll, afterEach } from "vitest";
 import prisma from "../../src/config/prisma";
 
-let transaction = null
-
 beforeAll(async()=>{
-    transaction = await prisma.$connect()
+    await prisma.$connect()
 })
 
 beforeEach(async()=>{

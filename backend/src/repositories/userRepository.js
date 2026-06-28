@@ -8,11 +8,15 @@ export async function findByEmail(email){
     })
 }
 
-export async function createUser(email, senha) {
+export async function createUser(email, password) {
     return prisma.user.create({
         data:{
             email,
-            senha,
+            password,
+        },
+        select:{
+            id:true,
+            email:true
         }
     })
 }

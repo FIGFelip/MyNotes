@@ -13,8 +13,10 @@ app.use(cors({
 }));
 app.use(express.json({limit:"200kb"}));
 app.use(helmet())
-app.use(pinoHttp())
-
+const isTest = process.env.NODE_ENV==="test"
+if(!isTest){
+  app.use(pinoHttp())
+}
 app.get("/", (req, res) => {
   res.json({
     status: "running",

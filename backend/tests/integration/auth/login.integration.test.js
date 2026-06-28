@@ -13,7 +13,7 @@ describe("POST/login", ()=>{
         .post("/auth/register")
         .send({
             email:email,
-            senha:"testpass"
+            password:"testpass"
         })
 
         expect(registerResponse.status).toBe(201)
@@ -25,7 +25,7 @@ describe("POST/login", ()=>{
         .post("/auth/login")
         .send({
             email:email,
-            senha:"testpass"
+            password:"testpass"
         })
 
         if(loginResponse.status!==200){
@@ -46,7 +46,7 @@ describe("Error POST/login", ()=>{
         .post("/auth/register")
         .send({
             email:email,
-            senha:"testpass"
+            password:"testpass"
         })
 
         expect(registerResponse.status).toBe(201)
@@ -58,14 +58,14 @@ describe("Error POST/login", ()=>{
         .post("/auth/login")
         .send({
             email:"wrong@email",
-            senha:"testpass"
+            password:"testpass"
         })
 
         expect(loginResponse.status).toBe(400)
         expect(loginResponse.body.message).toBe("Credenciais inválidas")
     })
 
-    it("Deve retornar erro se não houver email/senha", async()=>{
+    it("Deve retornar erro se não houver email/password", async()=>{
         // missing email
 
         //register
@@ -74,7 +74,7 @@ describe("Error POST/login", ()=>{
         .post("/auth/register")
         .send({
             email:email,
-            senha:"testpass"
+            password:"testpass"
         })
 
         expect(registerResponse.status).toBe(201)
@@ -86,11 +86,11 @@ describe("Error POST/login", ()=>{
         .post("/auth/login")
         .send({
             email:"    ",
-            senha:"testpass"
+            password:"testpass"
         })
 
         expect(loginResponse.status).toBe(400)
-        expect(loginResponse.body.message).toBe("Campos de email/senha faltantes")
+        expect(loginResponse.body.message).toBe("Campos de email/password faltantes")
 
 
         //missing password
@@ -99,7 +99,7 @@ describe("Error POST/login", ()=>{
         .post("/auth/register")
         .send({
             email:"test@test2.com",
-            senha:"testpass"
+            password:"testpass"
         })
 
         if(registerResponse2.status!==201){
@@ -114,11 +114,11 @@ describe("Error POST/login", ()=>{
         .post("/auth/login")
         .send({
             email:"test@test2.com",
-            senha:"      "
+            password:"      "
         })
 
         expect(loginResponse2.status).toBe(400)
-        expect(loginResponse2.body.message).toBe("Campos de email/senha faltantes")
+        expect(loginResponse2.body.message).toBe("Campos de email/password faltantes")
     })
     it("Deve retornar erro se credenciais forem inválidas", async()=>{
         const email = `test${crypto.randomUUID()}@test.com`
@@ -126,7 +126,7 @@ describe("Error POST/login", ()=>{
         .post("/auth/register")
         .send({
             email:email,
-            senha:"testpass"
+            password:"testpass"
         })
 
         expect(registerResponse.status).toBe(201)
@@ -138,7 +138,7 @@ describe("Error POST/login", ()=>{
         .post("/auth/login")
         .send({
             email:email,
-            senha:"wrongPass"
+            password:"wrongPass"
         })
 
         expect(loginResponse.status).toBe(400)

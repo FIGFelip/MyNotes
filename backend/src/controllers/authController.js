@@ -5,11 +5,11 @@ import * as service from "../services/authService.js";
 export async function register(req, res) {
   //calling register function from services
   try {
-    const { email, senha } = req.body;
-    if (!email || !senha || email.trim() === "" || senha.trim() === "") {
-      throw new Error("Campos de email/senha faltantes");
+    const { email, password } = req.body;
+    if (!email || !password || email.trim() === "" || password.trim() === "") {
+      throw new Error("Campos de email/password faltantes");
     }
-    const user = await service.register(email, senha);
+    const user = await service.register(email, password);
     if (!user) {
       return res.status(400).json({ message: "Erro ao criar usuário" });
     }
@@ -25,11 +25,11 @@ export async function register(req, res) {
 export async function login(req, res) {
   //calling login function from services
   try {
-    const { email, senha } = req.body;
-    if (!email || !senha || email.trim() === "" || senha.trim() === "") {
-      throw new Error("Campos de email/senha faltantes");
+    const { email, password } = req.body;
+    if (!email || !password || email.trim() === "" || password.trim() === "") {
+      throw new Error("Campos de email/password faltantes");
     }
-    const token = await service.login(email, senha);
+    const token = await service.login(email, password);
     if (!token) {
       throw new Error("Token não fornecido");
     }

@@ -8,7 +8,7 @@ describe("POST /auth/register", () => {
     const email = `test${crypto.randomUUID()}@test.com`
     const registerResponse = await request(app).post("/auth/register").send({
       email: email,
-      senha: "testpassintegration",
+      password: "testpassintegration",
     });
 
     expect(registerResponse.status).toBe(201);
@@ -23,23 +23,23 @@ describe("Error POST /auth/register", () => {
   it("Deve retornar erro se não houver email", async () => {
     const registerRes = await request(app).post("/auth/register").send({
       email: "   ",
-      senha: "testPass",
+      password: "testPass",
     });
 
     expect(registerRes.status).toBe(400);
-    expect(registerRes.body.message).toBe("Campos de email/senha faltantes");
+    expect(registerRes.body.message).toBe("Campos de email/password faltantes");
   });
 
-  // senha faltando
-  it("Deve retornar erro se não houver senha", async () => {
+  // password faltando
+  it("Deve retornar erro se não houver password", async () => {
     const email = `test${crypto.randomUUID()}@test.com`;
     const registerRes = await request(app).post("/auth/register").send({
       email: email,
-      senha: "    ",
+      password: "    ",
     });
 
     expect(registerRes.status).toBe(400);
-    expect(registerRes.body.message).toBe("Campos de email/senha faltantes");
+    expect(registerRes.body.message).toBe("Campos de email/password faltantes");
   });
 
   //email em uso
@@ -48,14 +48,14 @@ describe("Error POST /auth/register", () => {
     const email = `test${crypto.randomUUID()}@test.com`
     const registerRes = await request(app).post("/auth/register").send({
       email: email,
-      senha: "testPass",
+      password: "testPass",
     });
 
     
     // repetindo email
     const registerRes2 = await request(app).post("/auth/register").send({
       email: email,
-      senha: "test123",
+      password: "test123",
     });
     
     

@@ -10,6 +10,19 @@ export async function getNotes(req, res) {
     return res.status(500).json({ message: err.message });
   }
 }
+export async function getNoteById(req, res){
+  const user = req.userId
+  const noteId = Number(req.params.id)
+  try{
+    const note = await service.getUnique(user, noteId)
+    if(!note){
+      return res.status(404).json({message:"Nota não encontrada"})
+    }
+    return res.status(200).json(note)
+  }catch(err){
+    return res.status(500).json({message:err.message})
+  }
+}
 
 export async function getNotesFromTrash(req, res) {
   const userId = req.userId;

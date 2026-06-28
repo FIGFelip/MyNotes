@@ -10,7 +10,7 @@ describe("POST /notes", () => {
       .post("/auth/register")
       .send({
         email: email,
-        senha: "testpass123",
+        password: "testpass123",
       });
 
     if (userRegisterResponse.status !== 201) {
@@ -20,7 +20,7 @@ describe("POST /notes", () => {
     //logando usuario
     const loginResponse = await request(app).post("/auth/login").send({
       email: email,
-      senha: "testpass123",
+      password: "testpass123",
     });
 
     const token = loginResponse.body.token;
@@ -51,7 +51,7 @@ describe("Error POST/notes", () => {
       .post("/auth/register")
       .send({
         email: email,
-        senha: "testpass123",
+        password: "testpass123",
       });
 
     if (userRegisterResponse.status !== 201) {
@@ -61,7 +61,7 @@ describe("Error POST/notes", () => {
     //logando usuario
     const loginResponse = await request(app).post("/auth/login").send({
       email: email,
-      senha: "testpass123",
+      password: "testpass123",
     });
 
     const token = loginResponse.body.token;
@@ -109,7 +109,7 @@ describe("Error POST/notes", () => {
       .post("/auth/register")
       .send({
         email: email,
-        senha: "testpass123",
+        password: "testpass123",
       });
 
     if (userRegisterResponse.status !== 201) {
@@ -119,7 +119,7 @@ describe("Error POST/notes", () => {
     //logando usuario
     const loginResponse = await request(app).post("/auth/login").send({
       email: email,
-      senha: "testpass123",
+      password: "testpass123",
     });
 
     //const token = loginResponse.body.token

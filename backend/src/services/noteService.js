@@ -5,6 +5,11 @@ export async function get(userId) {
   return noteRepository.findNotesById(userId);
 }
 
+export async function getUnique(userId, noteId){
+  if(!userId) throw new Error("Usuário não identificado")
+  return noteRepository.findUniqueNoteById(userId, noteId)
+}
+
 export async function getFromTrash(userId) {
   if (!userId) throw new Error("Usário não identificado");
   return noteRepository.getFromTrashById(userId);

@@ -10,7 +10,7 @@ describe("Recover /trash/id", ()=>{
         .post("/auth/register")
         .send({
             email:email,
-            senha:"testPass"
+            password:"testPass"
         })
 
         if(createUserRes.status !== 201){
@@ -20,7 +20,7 @@ describe("Recover /trash/id", ()=>{
         //login
         const loginRes = await request(app).post("/auth/login").send({
             email:email,
-            senha:"testPass"
+            password:"testPass"
         })
 
         const token = loginRes.body.token

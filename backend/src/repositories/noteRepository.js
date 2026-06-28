@@ -4,9 +4,17 @@ export async function findNotesById(userId){
     return prisma.note.findMany({
         where:{
             userId,
-            status:{
-                not: "inactive"
-            }
+            status:"active"
+        }
+    })
+}
+
+
+export async function findUniqueNoteById(userId, noteId){
+    return prisma.note.findFirst({
+        where:{
+            id: noteId,
+            userId: userId
         }
     })
 }
@@ -22,7 +30,7 @@ export async function createNewNote(userId, title, body){
 }
 
 export async function editNoteById(id, userId, title, body){
-    const result = prisma.note.updateMany({
+    return prisma.note.updateMany({
         where:{
             id,
             userId,
@@ -32,8 +40,6 @@ export async function editNoteById(id, userId, title, body){
             body
         }
     })
-    if (result.count===0) throw new Error("Nota não encontrada")
-    return result
 }
 
 export async function softDeleteById(id, userId){
@@ -55,7 +61,7 @@ export async function softDeleteById(id, userId){
 }
 
 export async function hardDeleteById(id, userId){
-    const result = prisma.note.deleteMany({
+    const result = await prisma.note.deleteMany({
         where:{
             id,
             userId,
@@ -69,7 +75,7 @@ export async function hardDeleteById(id, userId){
 export async function HardDeleteOldNotes(id, userId){
     const thirtyDaysAgo = new Date()
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate()-30)
-    return prisma.deleteMany({
+    return prisma.note.deleteMany({
         where:{
             id,
             userId,
@@ -85,9 +91,7 @@ export async function getFromTrashById(userId){
     return prisma.note.findMany({
         where:{
             userId,
-            status:{
-                not:"active"
-            }
+            status:"inactive"
         }
     })
 }

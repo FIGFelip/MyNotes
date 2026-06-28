@@ -32,7 +32,7 @@ describe("Login", ()=>{
         userRepo.findByEmail.mockResolvedValue({
             id:1,
             email:email,
-            senha:"hashedPassword"
+            password:"hashedPassword"
         })
 
         bcrypt.compare.mockResolvedValue(true)
@@ -64,11 +64,11 @@ describe("Login", ()=>{
         expect(bcrypt.compare).not.toHaveBeenCalled()
     })
 
-    it("deve retornar erro em caso de senha incorreta", async()=>{
+    it("deve retornar erro em caso de password incorreta", async()=>{
         userRepo.findByEmail.mockResolvedValue({
             id:1,
             email:"test@test888",
-            senha:"hashedPassword"
+            password:"hashedPassword"
         })
 
         bcrypt.compare.mockResolvedValue(false)

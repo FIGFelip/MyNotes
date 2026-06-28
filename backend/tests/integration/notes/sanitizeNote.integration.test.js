@@ -10,7 +10,7 @@ describe("Sanitize POST/notes", ()=>{
         .post("/auth/register")
         .send({
             email:email,
-            senha:"testPass"
+            password:"testPass"
         })
 
         if(user.status!==201){
@@ -24,7 +24,7 @@ describe("Sanitize POST/notes", ()=>{
         .post("/auth/login")
         .send({
             email:email,
-            senha:"testPass"
+            password:"testPass"
         })
         const token = userLogin.body.token
         if(userLogin.status!==200){
