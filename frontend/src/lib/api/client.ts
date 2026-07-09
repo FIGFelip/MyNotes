@@ -3,7 +3,7 @@ import { API_BASE_URL, TOKEN_KEY } from "@/lib/constants";
 type httpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
 
 async function request<T>(endpoint: string, method: httpMethod, body?:unknown):Promise<T>{
-    const token = typeof window === "undefined" ? localStorage.getItem(TOKEN_KEY) : null
+    const token = typeof window !== "undefined" ? localStorage.getItem(TOKEN_KEY) : null
 
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         method,
@@ -15,6 +15,11 @@ async function request<T>(endpoint: string, method: httpMethod, body?:unknown):P
     })
 
     if(!response.ok){
+        if(response.status===401){
+            localStorage.removeItem(TOKEN_KEY)
+            localStorage.removeItem("mynotes_user")
+            window.location.href="/login"
+        }
         const error = await response.json().catch(()=>({}))
         throw new Error(error.message??"request failed")
     }

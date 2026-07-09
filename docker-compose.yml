@@ -1,6 +1,20 @@
 version: '3.9'
 
 services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: mynotes_frontend
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    env_file:
+      - ./.env
+    depends_on:
+      - app
   app:
     build: ./backend
     container_name: mynotes_api

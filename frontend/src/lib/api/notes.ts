@@ -1,7 +1,7 @@
 import { client } from "./client";
 import {Note, CreateNoteDto, UpdateNoteDto} from "@/lib/types/note"
 
-
+    
 export async function getNotes():Promise<Note[]>{
     return client.get<Note[]>("/notes")
 }
