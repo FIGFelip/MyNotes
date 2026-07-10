@@ -6,10 +6,13 @@ import { Note } from "@/lib/types/note";
 import { NoteList } from "@/components/notes/NoteList";
 import { NoteArea } from "@/components/notes/NoteArea";
 import { useSidebar } from "@/providers/sidebar-Provider";
+import { Toast } from "@/components/ui/Toast";
 
 export type NoteSelection = Note | "new" | null;
 
 export default function NotesPage() {
+  const [toastVisible, setToastVisible]=useState(false)
+  const [toastMessage, setToastMessage]=useState("")
   const {open}= useSidebar()
   const [selected, setSelected] = useState<NoteSelection>(null);
   const {
@@ -21,18 +24,28 @@ export default function NotesPage() {
     error,
   } = useNotes();
 
+  function showToast(message:string){
+    setToastMessage(message)
+    setToastVisible(true)
+  }
+
   async function handleSave(title: string, body: string) {
     if (selected == "new") {
       const created = await handleCreate({ title, body });
-      if (created) setSelected(created);
+      if (created) {
+        setSelected(created);
+      showToast("Nota criada!")
+      }
     } else if (selected !== null) {
       await handleEdit(selected.id, { title, body });
       setSelected({ ...selected, title, body });
+      showToast("Nota editada!")
     }
   }
 
   async function handleTrash(id: number) {
     await handleMoveToTrash(id);
+    showToast("Nota enviada à lixeira!")
     if (selected !== "new" && selected?.id == id) {
       setSelected(null);
     }
@@ -73,6 +86,11 @@ export default function NotesPage() {
           onBack={() => setSelected(null)}
         />
       </div>
+      <Toast
+      message={toastMessage}
+      visible={toastVisible}
+      onHide={()=>setToastVisible(false)}
+      />
       {error && (
         <p
           role="alert"

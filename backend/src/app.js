@@ -8,12 +8,6 @@ import pinoHttp from "pino-http";
 
 const app = express();
 
-app.use((req, res, next) => {
-  console.log("Origin", req.headers.origin);
-  next();
-});
-
-
 app.use(cors({
   origin: [
     process.env.FRONTEND_URL,

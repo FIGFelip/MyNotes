@@ -7,7 +7,8 @@ export async function getNotes(req, res) {
     const notes = await service.get(user);
     return res.status(200).json(notes);
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    logger.error(err.message)
+    return res.status(500).json({message:"Erro ao buscar notas"})
   }
 }
 export async function getNoteById(req, res){
@@ -20,7 +21,8 @@ export async function getNoteById(req, res){
     }
     return res.status(200).json(note)
   }catch(err){
-    return res.status(500).json({message:err.message})
+    logger.error(err.message)
+    return res.status(500).json({message:"Erro ao buscar nota"})
   }
 }
 
@@ -33,7 +35,8 @@ export async function getNotesFromTrash(req, res) {
     }
     return res.status(200).json(TrashNotes);
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    logger.error(err.message)
+    return res.status(500).json({ message: "Erro ao buscar na lixeira"});
   }
 }
 
@@ -48,7 +51,8 @@ export async function createNotes(req, res) {
     }
     return res.status(201).json(newNote);
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    logger.error(err.message)
+    return res.status(500).json({ message: "Erro ao criar nota" });
   }
 }
 
