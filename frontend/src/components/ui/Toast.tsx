@@ -7,8 +7,6 @@ type ToastProps={
     onHide:()=>void
 }
 
-
-
 export function Toast({message, visible, onHide}:ToastProps){
     useEffect(()=>{
         if(visible){
@@ -20,7 +18,7 @@ export function Toast({message, visible, onHide}:ToastProps){
     }, [visible])
     if(!visible) return null
     return(
-        <div className={"pt-4 pb-4 pr-2 pl-2 fixed right-3 bottom-3 bg-blue-400 drop-shadow-black shadow-black"} >
+        <div className={"pt-4 pb-4 rounded-xl pr-2 pl-2 fixed right-3 bottom-20 bg-green-600 drop-shadow-black shadow-black"} >
             <p className="text-center text-white">{message}</p>
         </div>
     )
