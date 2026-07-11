@@ -7,7 +7,9 @@ Aplicação full-stack para gerenciamento de notas pessoais, com autenticação 
 <p align="center">
   <img src="assets/images/mynotes-img.png" alt="mainPage" width="700">
 </p>
-> Deploy em breve
+
+- **Frontend:** https://my-notes-two-omega.vercel.app
+- **Backend:** https://mynotesapi-td33.onrender.com
 
 ---
 
