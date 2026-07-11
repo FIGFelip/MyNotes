@@ -39,7 +39,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           href={"/notes"}
           onClick={onClose}
         >
-          📝 Notas
+        Notas
         </Link>
 
         <Link
@@ -47,12 +47,12 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           href={"/notes/trash"}
           onClick={onClose}
         >
-          🗑️ Lixeira
+        Lixeira
         </Link>
       </nav>
       <button
         onClick={handleLougout}
-        className="mt-auto text-slate-400 hover:text-white hover:bg-[#2a3a4a] px-3 py-2 rounded-md transition-colors text-left w-full"
+        className="text-red-600 hover:text-white hover:bg-[#2a3a4a] px-3 py-2 rounded-md transition-colors text-left w-full"
       >
         Logout
       </button>

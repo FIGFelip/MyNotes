@@ -77,7 +77,7 @@ export function NoteArea({
         <p className="flex-1 text-slate-300 leading-relaxed whitespace-pre-wrap overflow-y-auto" >{body}</p>
         <div className="flex gap-2 justify-end border-t border-[#2a3a4a] pt-4" >
         <button className="px-4 py-2 rounded-md text-red-400 hover:text-white hover:bg-red-600 transition-colors" onClick={() => onTrash(selected.id)}>
-          🗑️ Descartar</button>
+          Descartar</button>
         <button className="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-500 text-white transition-colors" onClick={() => setIsEditing(true)}>Editar</button>
         </div>
       </div>

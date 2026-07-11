@@ -2,11 +2,13 @@
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import { Sidebar } from "@/components/notes/Sidebar";
 import { SidebarProvider, useSidebar } from "@/providers/sidebar-Provider";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 
 function NotesLayoutInner({ children }: { readonly children: ReactNode }) {
   const { isOpen, close } = useSidebar();
+  const [mounted] = useState(()=>typeof window !== "undefined")
 
+  if(!mounted) return null
   return (
     <div className="flex h-screen overflow-hidden bg-[#151f2e]">
       {isOpen && (

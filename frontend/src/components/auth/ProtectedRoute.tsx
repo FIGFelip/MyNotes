@@ -4,18 +4,22 @@ import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/providers/auth-provider";
 
-export default function ProtectedRoute({ children }: {readonly children: ReactNode }) {
+export default function ProtectedRoute({
+  children,
+}: {
+  readonly children: ReactNode;
+}) {
   const { token } = useAuth();
   const router = useRouter();
-  const [mounted, setMounted]=useState(()=>typeof window!=="undefined")
+  const [mounted] = useState(() => typeof window !== "undefined");
 
   useEffect(() => {
     if (!token) {
       router.push("/login");
     }
-  }, [token, router]);
+  }, [token, router, mounted]);
 
-  if(!token) return null
-  if(!mounted) return null
-  return <>{children}</>
+  if (!mounted) return null;
+  if (!token) return null;
+  return <>{children}</>;
 }
