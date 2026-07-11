@@ -4,6 +4,9 @@ Aplicação full-stack para gerenciamento de notas pessoais, com autenticação 
 
 ## Demonstração
 
+<p align="center">
+  <img src="assets/images/mynotes-img.png" alt="mainPage" width="700">
+</p>
 > Deploy em breve
 
 ---
