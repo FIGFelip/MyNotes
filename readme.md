@@ -11,6 +11,7 @@ Aplicação full-stack para gerenciamento de notas pessoais, com autenticação 
 - **Frontend:** https://my-notes-two-omega.vercel.app
 - **Backend:** https://mynotesapi-td33.onrender.com
 
+**Criando uma conta:** Utilize um email válido e uma senha contendo ao menos uma letra maiúscula, minúscula, 8 caracteres, números e símbolos.
 ---
 
 ## Stack
